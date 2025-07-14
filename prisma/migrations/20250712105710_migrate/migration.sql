@@ -1,0 +1,42 @@
+/*
+  Warnings:
+
+  - The primary key for the `User` table will be changed. If it partially fails, the table could be left without primary key constraint.
+
+*/
+-- DropForeignKey
+ALTER TABLE "Blog" DROP CONSTRAINT "Blog_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Calendar" DROP CONSTRAINT "Calendar_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Suivi" DROP CONSTRAINT "Suivi_userId_fkey";
+
+-- AlterTable
+ALTER TABLE "Blog" ALTER COLUMN "userId" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "Calendar" ALTER COLUMN "userId" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "Patient" ALTER COLUMN "userId" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "Suivi" ALTER COLUMN "userId" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
+ALTER COLUMN "id" DROP DEFAULT,
+ALTER COLUMN "id" SET DATA TYPE TEXT,
+ADD CONSTRAINT "User_pkey" PRIMARY KEY ("id");
+DROP SEQUENCE "User_id_seq";
+
+-- AddForeignKey
+ALTER TABLE "Suivi" ADD CONSTRAINT "Suivi_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Blog" ADD CONSTRAINT "Blog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Calendar" ADD CONSTRAINT "Calendar_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
